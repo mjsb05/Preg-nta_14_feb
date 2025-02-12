@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Tienes algo que hacer mañana?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            color: #333;
+            background-color: #ffccf9; /* Fondo rosado claro */
+            background-image: url('https://www.transparenttextures.com/patterns/soft-circle-scales.png'); /* Textura suave */
+            position: relative;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #ff0066; /* Rosa más oscuro para el título */
+            text-shadow: 2px 2px #fff;
+            z-index: 3; /* Asegura que el título esté por encima de las imágenes */
+            position: relative;
+            margin-top: 20px; /* Espacio adicional para evitar superposición */
+        }
+        .button {
+            background-color: #ff6699; /* Rosa pastel */
+            border: none;
+            color: #fff;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: 0 4px #999;
+            z-index: 3; /* Asegura que los botones estén por encima de las imágenes */
+            position: relative;
+        }
+        .button:hover {
+            background-color: #ff4d88; /* Rosa un poco más oscuro al pasar el mouse */
+        }
+        .button:active {
+            background-color: #ff3377;
+            box-shadow: 0 2px #666;
+            transform: translateY(2px);
+        }
+        .big-button {
+            font-size: 24px;
+            padding: 20px 50px;
+            background-color: #ff0066; /* Rosa fuerte */
+            color: #fff;
+            border: 2px solid #fff;
+        }
+        .big-button:hover {
+            background-color: #e6005c;
+        }
+        /* Imágenes de fondo */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Las imágenes están detrás del contenido */
+        }
+        .background img {
+            position: absolute;
+            width: 120px; /* Tamaño de las imágenes */
+            opacity: 0.8; /* Transparencia para no distraer demasiado */
+        }
+        /* Posicionamiento de las imágenes */
+        .jirachi {
+            top: 20%; /* Más abajo */
+            left: 5%;
+        }
+        .chandelure {
+            top: 20%; /* Más abajo */
+            right: 5%;
+        }
+        .mismagius {
+            top: 60%; /* Más abajo */
+            left: 5%;
+        }
+        .victini {
+            top: 60%; /* Más abajo */
+            right: 5%;
+        }
+        .goodra {
+            top: 90%; /* Más abajo */
+            left: 15%;
+        }
+        .mew {
+            top: 90%; /* Más abajo */
+            right: 15%;
+        }
+        .pikachu {
+            top: 110%; /* Fuera de la pantalla, debajo del contenido */
+            left: 25%;
+        }
+        .eevee {
+            top: 110%; /* Fuera de la pantalla, debajo del contenido */
+            right: 25%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Imágenes de fondo -->
+    <div class="background">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/385.png" alt="Jirachi" class="jirachi">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/609.png" alt="Chandelure" class="chandelure">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/429.png" alt="Mismagius" class="mismagius">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/494.png" alt="Victini" class="victini">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/706.png" alt="Goodra" class="goodra">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/151.png" alt="Mew" class="mew">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png" alt="Pikachu" class="pikachu">
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png" alt="Eevee" class="eevee">
+    </div>
+
+    <h1>¿Tienes algo que hacer mañana?</h1>
+    <div id="question">
+        <button class="button" onclick="responder('si')">Sí</button>
+        <button class="button" onclick="responder('no')">No</button>
+    </div>
+    <div id="follow-up" style="display:none;">
+        <h2 id="follow-up-question"></h2>
+        <button class="button" id="follow-up-button-yes" onclick="seguir('si')"></button>
+        <button class="button" id="follow-up-button-no" onclick="seguir('no')"></button>
+    </div>
+    <div id="cartas" style="display:none;">
+        <h2>¿Quieres ir a abrir sobres Pokémon?</h2>
+        <button class="button big-button" onclick="abrirSobres()">¡Sí!</button>
+    </div>
+
+    <script>
+        let preguntaActual = "inicio";
+
+        function responder(respuesta) {
+            const questionDiv = document.getElementById('question');
+            const followUpDiv = document.getElementById('follow-up');
+            const cartasDiv = document.getElementById('cartas');
+            const followUpQuestion = document.getElementById('follow-up-question');
+            const followUpButtonYes = document.getElementById('follow-up-button-yes');
+            const followUpButtonNo = document.getElementById('follow-up-button-no');
+
+            if (respuesta === 'si') {
+                preguntaActual = "seguro";
+                followUpQuestion.textContent = '¿Estás seguro?';
+                followUpButtonYes.textContent = 'Sí';
+                followUpButtonNo.textContent = 'No';
+                followUpDiv.style.display = 'block';
+                questionDiv.style.display = 'none';
+            } else if (respuesta === 'no') {
+                preguntaActual = "cartas";
+                cartasDiv.style.display = 'block';
+                questionDiv.style.display = 'none';
+                followUpDiv.style.display = 'none';
+            }
+        }
+
+        function seguir(respuesta) {
+            const followUpQuestion = document.getElementById('follow-up-question');
+            const followUpButtonYes = document.getElementById('follow-up-button-yes');
+            const followUpButtonNo = document.getElementById('follow-up-button-no');
+            const cartasDiv = document.getElementById('cartas');
+
+            if (preguntaActual === "seguro") {
+                if (respuesta === 'si') {
+                    followUpQuestion.textContent = '¿Estás realmente seguro?';
+                } else if (respuesta === 'no') {
+                    preguntaActual = "cartas";
+                    cartasDiv.style.display = 'block';
+                    followUpDiv.style.display = 'none';
+                }
+            }
+        }
+
+        function abrirSobres() {
+            alert('¡Vamos a abrir sobres Pokémon! ¡Prepárate para la diversión!');
+        }
+    </script>
+</body>
+</html>
